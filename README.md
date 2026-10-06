@@ -30,6 +30,8 @@ Abra **http://127.0.0.1:4517**. Para alterar a porta: `PORT=4600 npm start` em m
 - **Fontes e qualidade:** hashes sintéticos, versões, advertências e definições dos indicadores.
 - **Apresentação pública:** cinco slides explicando a solução, sem os resultados privados. A apresentação completa está no portal.
 
+O seletor de período oferece atalhos de anos com cobertura explícita e um intervalo personalizado de meses inclusivos. A seleção é um rascunho até aplicar; cancelar mantém o período anterior e limpar volta à base completa. Indicadores, rankings, gráficos, tabelas e CSV compartilham o recorte. A comparação usa os mesmos meses do ano anterior quando disponíveis; a carteira B2B mantém o snapshot.
+
 Use o filtro de período, consulte as definições dos cartões e navegue pela busca com `Ctrl K`. Tabelas largas têm rolagem horizontal. A apresentação admite setas, Home, End e Esc.
 
 ## Estrutura e validação
