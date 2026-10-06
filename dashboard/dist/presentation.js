@@ -1,0 +1,14 @@
+const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+export function buildPresentation(dto) {
+  return {versionId:dto.versionId,slides:[
+    {title:'Da informação à decisão.',lead:'Uma demonstração pública, reproduzível e inteiramente sintética.',text:'O dashboard permite explorar volume, valor e mix comercial sem divulgar dados privados do case.'},
+    {title:'Definições antes dos números.',lead:'Cada indicador explicita seu universo.',text:'O saldo observado inclui positivos, negativos e zero. Ticket positivo divide a soma positiva pela quantidade de linhas positivas. Uma linha não equivale necessariamente a um cliente único.'},
+    {title:'Consolidar com critério.',lead:'B2C e B2B têm bases temporais e monetárias distintas.',text:'B2C é um fluxo em BRL. B2B é um snapshot de status atual com moeda não informada. Um cenário mensal explicita suas hipóteses; o total financeiro oficial permanece indisponível.'},
+    {title:'Uma leitura rastreável.',lead:'Fontes → normalização → projeções → DTO → dashboard.',text:'Os parsers validam a entrada, os cálculos usam centavos inteiros e o DTO entrega somente agregados. Os testes públicos exercitam as fórmulas e os limites de segurança do portal.'},
+    {title:'Explore o código e a análise.',lead:'Esta apresentação explica a edição pública.',text:'A apresentação completa e os resultados reais ficam no portal protegido. Esta edição não representa uma implantação completa de ingestão nem comprova operação permanente.'}
+  ]};
+}
+export function presentationMarkup(deck,index=0) {
+  const i=Math.min(Math.max(index,0),deck.slides.length-1),s=deck.slides[i];
+  return `<div class="presentation executive-deck"><div class="presentation-toolbar"><a class="deck-brand" href="#b2c">medway</a><div class="deck-toolbar-tools"><label class="sr-only" for="slide-select">Selecionar slide</label><select id="slide-select">${deck.slides.map((x,j)=>`<option value="${j}" ${j===i?'selected':''}>${j+1}. ${esc(x.title)}</option>`).join('')}</select><button class="button" id="presentation-focus" aria-pressed="false">Ampliar</button></div></div><article class="slide-canvas deck-slide" aria-roledescription="slide" aria-label="Slide ${i+1} de ${deck.slides.length}"><span class="slide-section">EDIÇÃO PÚBLICA · DADOS SINTÉTICOS</span><h2 class="slide-title" tabindex="-1">${esc(s.title)}</h2><p class="slide-lead">${esc(s.lead)}</p><div class="slide-body"><p>${esc(s.text)}</p><a class="button" href="#b2c">Explorar dashboard ↗</a></div></article><div class="presentation-controls"><button class="button" id="slide-prev" ${i===0?'disabled':''} aria-label="Slide anterior">← Anterior</button><span id="slide-status" aria-live="polite">${i+1} de ${deck.slides.length}</span><button class="button" id="slide-next" ${i===deck.slides.length-1?'disabled':''} aria-label="Próximo slide">Próximo →</button></div></div>`;
+}
