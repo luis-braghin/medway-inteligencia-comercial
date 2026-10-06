@@ -1,11 +1,19 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { once } from 'node:events';
+import { readFileSync } from 'node:fs';
 import { normalizeB2C, normalizeB2B } from '../src/normalize.mjs';
 import { demoBundle, demoDTO, syntheticSources } from '../src/demo-data.mjs';
 import { toDashboardDTO } from '../src/dashboard-dto.mjs';
 import { createDemoServer } from '../src/demo-server.mjs';
 import { buildPresentation, presentationMarkup } from '../dashboard/dist/presentation.js';
+import * as publicPresentation from '../dashboard/dist/presentation.js';
+
+test('dashboard module imports are supplied by the synthetic presentation edition',()=>{
+  const app=readFileSync(new URL('../dashboard/dist/app.js',import.meta.url),'utf8');
+  const names=app.match(/import\s*\{([^}]+)\}\s*from\s*['"]\.\/presentation\.js['"]/)[1].split(',').map(name=>name.trim());
+  for(const name of names)assert.ok(Object.hasOwn(publicPresentation,name),`Missing presentation export: ${name}`);
+});
 
 test('synthetic inputs reproduce totals from records and preserve negative and zero lines',()=>{
   const sources=syntheticSources(),hash='a'.repeat(64);

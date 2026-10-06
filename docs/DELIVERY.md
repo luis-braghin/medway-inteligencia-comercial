@@ -1,7 +1,7 @@
 # Guia para avaliar a entrega
 
-1. Acesse [o dashboard protegido](https://medway-inteligencia.luisz-braghin.workers.dev/#b2c) com a senha enviada separadamente.
-2. Explore B2C, B2B e visão conjunta. Abra as definições dos indicadores para conferir universos e premissas.
+1. Acesse [o dashboard protegido](https://medway-inteligencia.luisz-braghin.workers.dev/) com a senha enviada separadamente.
+2. Comece pela visão geral; depois explore Contratos B2B e Vendas B2C. Abra as definições dos indicadores para conferir universos e premissas.
 3. Veja [a apresentação completa](https://medway-inteligencia.luisz-braghin.workers.dev/#presentation), com os resultados do case.
 4. Clone o repositório e execute `npm test`, `npm run verify:public` e `npm start` para revisar a implementação pública com dados fictícios.
 

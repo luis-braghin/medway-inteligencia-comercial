@@ -2,7 +2,7 @@ import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 const root=fileURLToPath(new URL('../',import.meta.url));
-const allowed=new Set(['.gitignore','README.md','package.json','package-lock.json','docs/ARCHITECTURE.md','docs/SECURITY.md','docs/DELIVERY.md','docs/demo.jpg','src/normalize.mjs','src/views.mjs','src/dashboard-dto.mjs','src/portal-client.mjs','src/hosted-app.mjs','src/demo-data.mjs','src/demo-server.mjs','scripts/demo.mjs','scripts/verify-public.mjs','tests/views.test.mjs','tests/portal-client.test.mjs','tests/hosted-app.test.mjs','tests/dashboard-interactions.test.mjs','tests/demo.test.mjs','tests/period-filter.test.mjs','dashboard/dist/index.html','dashboard/dist/app.js','dashboard/dist/presentation.js','dashboard/dist/styles.css']);
+const allowed=new Set(['.gitignore','README.md','package.json','package-lock.json','docs/ARCHITECTURE.md','docs/SECURITY.md','docs/DELIVERY.md','docs/demo.jpg','src/normalize.mjs','src/views.mjs','src/dashboard-dto.mjs','src/portal-client.mjs','src/hosted-app.mjs','src/demo-data.mjs','src/demo-server.mjs','scripts/demo.mjs','scripts/verify-public.mjs','tests/views.test.mjs','tests/portal-client.test.mjs','tests/hosted-app.test.mjs','tests/dashboard-interactions.test.mjs','tests/demo.test.mjs','tests/period-filter.test.mjs','tests/overview.test.mjs','dashboard/dist/index.html','dashboard/dist/app.js','dashboard/dist/presentation.js','dashboard/dist/styles.css']);
 const findings=[];let count=0;
 async function walk(dir='') {
   for(const item of await readdir(path.join(root,dir),{withFileTypes:true})) {

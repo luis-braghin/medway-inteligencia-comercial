@@ -2,7 +2,7 @@
 
 Dashboard de vendas B2C, contratos B2B e composição mensal com premissas explícitas. Desenvolvido por Luiz para o case técnico de Sales Ops / RevOps, com assistência de IA na análise, implementação e revisão.
 
-**[Abrir o portal do case](https://medway-inteligencia.luisz-braghin.workers.dev/#b2c)** · **[Abrir a apresentação completa](https://medway-inteligencia.luisz-braghin.workers.dev/#presentation)**
+**[Abrir o portal do case](https://medway-inteligencia.luisz-braghin.workers.dev/)** · **[Abrir a apresentação completa](https://medway-inteligencia.luisz-braghin.workers.dev/#presentation)**
 
 O portal exige a senha de avaliação, entregue separadamente. Este repositório público é a **edição reproduzível com dados 100% sintéticos**: inclui interface, parsers, fórmulas, DTO e testes de segurança. Não contém dados reais, credenciais, a pesquisa privada da apresentação ou componentes privados de ingestão.
 
@@ -24,13 +24,15 @@ Abra **http://127.0.0.1:4517**. Para alterar a porta: `PORT=4600 npm start` em m
 
 ## O que explorar
 
+- **Visão geral (inicial):** composição mensal, MRR B2B modelado do último mês do filtro, carteira recorrente, mix B2C e leitura mensal com os componentes separados.
+- **Contratos B2B:** status atual, licenças, plano e região; valor mensal na unidade da fonte.
 - **Vendas B2C:** saldo observado, linhas positivas, ticket positivo, evolução mensal, canais, produtos e CSV do recorte.
-- **Contratos B2B:** status atual, licenças, plano e região; valor mensal em unidades da fonte, pois a moeda não é informada.
-- **Visão conjunta:** componentes separados e cenário mensal em BRL sob hipóteses explícitas. Total financeiro oficial indisponível.
 - **Fontes e qualidade:** hashes sintéticos, versões, advertências e definições dos indicadores.
 - **Apresentação pública:** cinco slides explicando a solução, sem os resultados privados. A apresentação completa está no portal.
 
 O seletor de período oferece atalhos de anos com cobertura explícita e um intervalo personalizado de meses inclusivos. A seleção é um rascunho até aplicar; cancelar mantém o período anterior e limpar volta à base completa. Indicadores, rankings, gráficos, tabelas e CSV compartilham o recorte. A comparação usa os mesmos meses do ano anterior quando disponíveis; a carteira B2B mantém o snapshot.
+
+A rosca, as barras de composição e a leitura mensal oferecem detalhes por mouse, teclado e toque. O MRR modelado usa hipótese BRL e status atual; sua evolução não reconstrói status histórico nem recebimentos.
 
 Use o filtro de período, consulte as definições dos cartões e navegue pela busca com `Ctrl K`. Tabelas largas têm rolagem horizontal. A apresentação admite setas, Home, End e Esc.
 
