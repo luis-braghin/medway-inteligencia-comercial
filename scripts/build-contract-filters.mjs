@@ -1,0 +1,12 @@
+import {readFile,writeFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {syntheticSources,DEMO_VERSION} from '../src/demo-data.mjs';
+import {normalizeB2B} from '../src/normalize.mjs';
+import {buildContractCube} from '../src/b2b-filtering.mjs';
+const {json}=syntheticSources(),sourceSha256=createHash('sha256').update(json).digest('hex');
+const artifact=buildContractCube({records:normalizeB2B(json,sourceSha256).records,versionId:DEMO_VERSION,sourceSha256});
+const code=(await readFile(new URL('../src/b2b-filtering.mjs',import.meta.url),'utf8')).replaceAll('export function','function');
+const block='// BEGIN CONTRACT FILTERS\n'+code+'\nconst contractArtifact='+JSON.stringify(artifact)+';\n// END CONTRACT FILTERS';
+const p=new URL('../dashboard/dist/app.js',import.meta.url),s=await readFile(p,'utf8');
+await writeFile(p,s.replace(/\/\/ BEGIN CONTRACT FILTERS[\s\S]*?\/\/ END CONTRACT FILTERS/,()=>block));
+console.log(JSON.stringify({synthetic:true,cells:artifact.cells.length}));

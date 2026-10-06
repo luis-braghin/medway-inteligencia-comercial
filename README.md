@@ -60,3 +60,6 @@ Consulte [arquitetura e limites](docs/ARCHITECTURE.md), [segurança](docs/SECURI
 Uma linha positiva não comprova cliente único, venda única, pagamento ou margem. O snapshot B2B não reconstrói vigência nem churn histórico; seu campo mensal não é homologado como MRR. O cenário assume BRL, status atual, coexistência e mês cheio desde o início do contrato. Datas de captura e publicação não comprovam atualização factual da fonte.
 
 Os resultados sintéticos permitem avaliar código e interação; não sustentam conclusões comerciais sobre a Medway. Marcas mencionadas pertencem a seus titulares. A presença pública do código não concede licença sobre dados ou componentes privados excluídos.
+
+
+Contratos B2B: filtros combinados de status, plano e região, aplicados aos mesmos indicadores e gráficos. A navegação preserva o período de vendas e o recorte da carteira separadamente. O agregado desta edição é gerado exclusivamente das fontes sintéticas por `node scripts/build-contract-filters.mjs`; nenhuma identidade contratual é enviada à interface.

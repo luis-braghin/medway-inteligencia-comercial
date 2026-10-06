@@ -343,3 +343,29 @@
 
 /* Purchase associations: row denominators, legible labels, deliberate overflow. */
 .segment-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:4px 0 20px;font-size:14px}.segment-controls label{font-weight:650;color:var(--navy)}.segment-controls select{padding:10px 36px 10px 12px;border:1px solid #d6e2ef;border-radius:9px;background:#fff;color:#00205b;font:inherit;min-height:42px}.segment-controls>span{color:#5e7398;font-size:13px;margin-left:auto}.segment-table{width:100%;border-collapse:separate;border-spacing:7px;min-width:720px}.segment-table th{font-size:13px;font-weight:600;line-height:1.4;text-align:center;color:#405b82;padding:8px 3px;text-transform:none;letter-spacing:0}.segment-table tbody th{text-align:left;min-width:130px;color:#00205b}.segment-table td{padding:0;border:0}.segment-cell{width:100%;border:1px solid rgba(51,116,209,.10);border-radius:9px;background:rgba(32,132,224,var(--strength));color:#00205b;min-height:68px;padding:10px 6px;cursor:pointer;font:inherit}.segment-cell strong{display:block;font-size:16px;font-weight:700}.segment-cell small{display:block;margin-top:5px;font-size:13px;color:#315077}.segment-cell.sparse{background:#f3f6fa;color:#74839b}.segment-cell:focus-visible{outline:3px solid #00b9aa;outline-offset:2px}.segment-base{text-align:center;font-size:14px;font-weight:700;color:#00205b}.segment-observation{margin:20px 0 10px;padding:18px 20px;background:#edf9f7;border:1px solid #d3eeea;border-radius:12px}.segment-observation strong{font-size:16px;color:#00205b}.segment-observation p{font-size:14px;line-height:1.65;color:#4a6385;margin:7px 0 0}.segment-method{font-size:13px;color:#536a8e;margin-top:16px}.segment-method summary{cursor:pointer;font-weight:600}.segment-method p{line-height:1.7;max-width:1000px}.segment-scroll{max-width:100%;overflow-x:auto}.panel:has(.segment-controls){margin-top:20px}@media(max-width:600px){.segment-controls{gap:8px}.segment-controls>span{margin-left:0;width:100%}.segment-controls select{max-width:100%}.segment-observation{padding:15px}.segment-table{border-spacing:5px}.segment-cell small{font-size:13px}}
+
+
+/* Same page geometry and scoped filters across the three commercial views. */
+.dashboard-page:not(.presentation-page) .page-heading{min-height:112px;align-items:center;margin-bottom:20px}
+.dashboard-page:not(.presentation-page) .page-heading h1{font-size:clamp(27px,2.3vw,34px);line-height:1.22;letter-spacing:-.7px}
+.dashboard-page:not(.presentation-page) .page-heading p{line-height:1.55;max-width:610px}
+.dashboard-page:not(.presentation-page) .metrics{align-items:stretch}
+.dashboard-page:not(.presentation-page) .metric{min-height:158px}
+.dashboard-page:not(.presentation-page) .model-context{min-height:68px;margin:0 0 20px;box-sizing:border-box}
+.period-control[hidden],.contract-control[hidden],#clear-contracts[hidden]{display:none!important}
+#contract-dialog{width:420px;max-width:calc(100vw - 32px);padding:26px;border:1px solid #deebf5;border-radius:18px;background:#fff;color:#00205b;box-shadow:0 22px 65px #05245235}
+#contract-dialog::backdrop{background:#06265430;backdrop-filter:blur(2px)}
+#contract-dialog h2{font-size:23px;margin:6px 0 0}
+#contract-help{color:#5b7394;font-size:14px;line-height:1.55}
+#close-contracts{border:0;background:#f0f5fa;border-radius:50%;width:38px;height:38px;font-size:24px;cursor:pointer;color:#355779}
+.contract-fields{display:grid;gap:15px;margin:22px 0}.contract-fields label{font-size:13px;font-weight:600;display:grid;gap:7px}
+.contract-fields select{width:100%;font:inherit;font-size:14px;padding:12px;border:1px solid #ccdeeb;border-radius:9px;background:#fbfdff;color:#00205b;min-height:44px}
+.contract-control .period-trigger-label>span{color:#5f7694;font-size:11px}
+#contract-summary{overflow-wrap:anywhere;white-space:normal;line-height:1.5}
+.dashboard-page:not(.presentation-page) .business-top{margin-bottom:20px}
+@media(min-width:961px){.dashboard-page:not(.presentation-page) .page-heading>div:first-child{min-width:0;flex:1}.dashboard-page:not(.presentation-page) .period-control{flex:0 0 305px;min-width:305px}.dashboard-page:not(.presentation-page) .period-trigger{min-height:80px}.dashboard-page:not(.presentation-page) .filter-context{min-height:44px}}
+@media(max-width:960px){.dashboard-page:not(.presentation-page) .page-heading{min-height:0}.dashboard-page:not(.presentation-page) .period-control{max-width:none;width:100%}.dashboard-page:not(.presentation-page) .period-trigger{min-height:77px}.dashboard-page:not(.presentation-page) .filter-context{min-height:58px}}
+@media(max-width:600px){#contract-dialog{width:calc(100vw - 24px);max-width:none;margin:auto;padding:20px;max-height:calc(100dvh - 24px)}.dashboard-page:not(.presentation-page) .model-context{min-height:90px}.dashboard-page:not(.presentation-page) .metric{min-height:158px}}
+
+@media(max-width:800px){.dashboard-page:not(.presentation-page) .model-context{display:grid;grid-template-columns:24px minmax(0,1fr);gap:12px}.dashboard-page:not(.presentation-page) .model-context p{min-width:0;margin:0}.dashboard-page:not(.presentation-page) .model-context .button{grid-column:2;justify-self:start;margin:0}}
+@media(max-width:600px){.dashboard-page[data-view="b2b"] .detail-table{min-width:440px}.dashboard-page[data-view="b2b"] .detail-table th,.dashboard-page[data-view="b2b"] .detail-table td{padding-right:18px}}
