@@ -236,6 +236,7 @@ function appWith(fake, options = {}) {
       'index.html': '<!doctype html><title>Private dashboard</title>',
       'app.js': 'fetch("/api/dashboard")',
       'presentation.js': 'private-reviewed-aggregate-notes',
+      'segments.js': 'private-reviewed-segment-aggregates',
       'styles.css': 'body{font-family:sans-serif}',
     },
     architecture: { status: 'prepared', private: 'architecture detail' },
@@ -624,6 +625,23 @@ test('presentation asset is protected and denied after logout, including query a
   assert.equal((await app(request('/presentation.js?raw=true',{headers:{Cookie:cookie}}),ENV)).status,400);
   await app(request('/auth/logout',{method:'POST',headers:sameOriginHeaders({Cookie:cookie})}),ENV);
   assert.equal((await app(request('/presentation.js',{headers:{Cookie:cookie}}),ENV)).status,401);
+});
+
+test('segment asset is protected and denied after logout, including query and traversal attempts',async()=>{
+  const fake=fakeFetch({sessionValid:false}),app=appWith(fake);
+  const anonymous=await app(request('/segments.js'),ENV);
+  assert.equal(anonymous.status,401);
+  assert.doesNotMatch(await anonymous.text(),/private-reviewed/);
+  const login=await app(request('/auth/login',{method:'POST',headers:sameOriginHeaders({'Content-Type':'application/json'}),body:JSON.stringify({password:'secret'})}),ENV);
+  const cookie=login.headers.get('set-cookie').split(';',1)[0];
+  const asset=await app(request('/segments.js',{headers:{Cookie:cookie}}),ENV);
+  assert.equal(asset.status,200);
+  assert.equal(await asset.text(),'private-reviewed-segment-aggregates');
+  assert.match(asset.headers.get('content-type'),/javascript/);
+  assert.match(asset.headers.get('cache-control'),/no-store/);
+  assert.equal((await app(request('/segments.js?raw=true',{headers:{Cookie:cookie}}),ENV)).status,400);
+  await app(request('/auth/logout',{method:'POST',headers:sameOriginHeaders({Cookie:cookie})}),ENV);
+  assert.equal((await app(request('/segments.js',{headers:{Cookie:cookie}}),ENV)).status,401);
 });
 
 test('wrong project configuration fails before network and never accepts a service-key fallback', async () => {

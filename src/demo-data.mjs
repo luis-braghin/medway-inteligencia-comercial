@@ -20,7 +20,7 @@ export function syntheticSources() {
     for(let i=0;i<count;i++) {
       const channel=channels[i%channels.length];
       const amount=i===0 && monthIndex===3?-250: i===1 && monthIndex===3?0:1200+monthIndex*80+(i%7)*135;
-      rows.push([`${year}-${String(month).padStart(2,'0')}-${String(i%27+1).padStart(2,'0')}`,`Q${Math.ceil(month/3)}`,channel,channel==='Embaixador'?'Embaixador 01':'',channel==='Evento Presencial'?'Encontro Local':'',channel==='Evento Presencial'?'SP':'',products[i%5],'6º ano','SEM_CUPOM',amount.toFixed(2).replace('.',',')]);
+      rows.push([`${year}-${String(month).padStart(2,'0')}-${String(i%27+1).padStart(2,'0')}`,`Q${Math.ceil(month/3)}`,channel,channel==='Embaixador'?'Embaixador 01':'',channel==='Evento Presencial'?'Encontro Local':'',channel==='Evento Presencial'?'SP':'',products[i%5],['4º ano','5º ano','6º ano','Recém-formado','Formado R+'][(i+monthIndex)%5],'SEM_CUPOM',amount.toFixed(2).replace('.',',')]);
     }
   }
   const csv=rows.map(row=>row.map(csvCell).join(',')).join('\n');

@@ -15,6 +15,7 @@ const ASSET_CONTENT_TYPES = Object.freeze({
   'index.html': 'text/html; charset=utf-8',
   'app.js': 'text/javascript; charset=utf-8',
   'presentation.js': 'text/javascript; charset=utf-8',
+  'segments.js': 'text/javascript; charset=utf-8',
   'styles.css': 'text/css; charset=utf-8',
 });
 
@@ -680,7 +681,7 @@ export function createHostedApp({ assets, architecture, fetchImpl = (input, init
         return assetResponse(assets, 'index.html');
       }
 
-      if (url.pathname === '/app.js' || url.pathname === '/presentation.js') {
+      if (url.pathname === '/app.js' || url.pathname === '/presentation.js' || url.pathname === '/segments.js') {
         ensureNoQuery(url);
         await protectedSession(fetchImpl, env, request);
         return assetResponse(assets, url.pathname.slice(1));

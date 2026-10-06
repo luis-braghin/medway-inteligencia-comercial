@@ -25,16 +25,18 @@ Abra **http://127.0.0.1:4517**. Para alterar a porta: `PORT=4600 npm start` em m
 ## O que explorar
 
 - **Visão geral (inicial):** composição mensal, MRR B2B modelado do último mês do filtro, carteira recorrente, mix B2C e leitura mensal com os componentes separados.
-- **Contratos B2B:** status atual, licenças, plano e região; valor mensal na unidade da fonte.
-- **Vendas B2C:** saldo observado, linhas positivas, ticket positivo, evolução mensal, canais, produtos e CSV do recorte.
+- **Contratos B2B:** status atual, licenças, plano e região; valor mensal em BRL da demonstração.
+- **Vendas B2C:** saldo observado, linhas positivas, ticket positivo, evolução mensal, canais, produtos e CSV do recorte. Sete cruzamentos mostram perfil × curso/canal, canal × curso, embaixador × perfil/curso e evento × perfil/região × curso, com bases e tooltips no mesmo período. Sete cruzamentos mostram perfil × curso/canal, canal × curso, embaixador × perfil/curso e evento × perfil/região × curso, com bases e tooltips no mesmo período. Sete cruzamentos mostram perfil × curso/canal, canal × curso, embaixador × perfil/curso e evento × perfil/região × curso, com bases e tooltips no mesmo período.
 - **Fontes e qualidade:** hashes sintéticos, versões, advertências e definições dos indicadores.
 - **Apresentação pública:** cinco slides explicando a solução, sem os resultados privados. A apresentação completa está no portal.
 
 O seletor de período oferece atalhos de anos com cobertura explícita e um intervalo personalizado de meses inclusivos. A seleção é um rascunho até aplicar; cancelar mantém o período anterior e limpar volta à base completa. Indicadores, rankings, gráficos, tabelas e CSV compartilham o recorte. A comparação usa os mesmos meses do ano anterior quando disponíveis; a carteira B2B mantém o snapshot.
 
-A rosca, as barras de composição e a leitura mensal oferecem detalhes por mouse, teclado e toque. O MRR modelado usa hipótese BRL e status atual; sua evolução não reconstrói status histórico nem recebimentos.
+A rosca, as barras de composição e a leitura mensal oferecem detalhes por mouse, teclado e toque. O MRR modelado usa BRL definido na demonstração e status atual; sua evolução não reconstrói status histórico nem recebimentos.
 
 Use o filtro de período, consulte as definições dos cartões e navegue pela busca com `Ctrl K`. Tabelas largas têm rolagem horizontal. A apresentação admite setas, Home, End e Esc.
+
+As matrizes descrevem compras positivas, com denominador de cada grupo. Elas não medem conversão ou eficiência: isso exige leads, exposição e custos. O artefato analítico exige a mesma versão e hash da fonte; uma publicação diferente pede recálculo. Regerar a matriz sintética: `node scripts/build-segments.mjs`.
 
 ## Estrutura e validação
 

@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import {segmentArtifact,segmentMatrix,segmentCompatible} from '../dashboard/dist/segments.js';
 import { once } from 'node:events';
 import { readFileSync } from 'node:fs';
 import { normalizeB2C, normalizeB2B } from '../src/normalize.mjs';
@@ -60,7 +61,7 @@ test('loopback demo serves allowlisted assets and rejects writes, foreign origin
   const server=createDemoServer();server.listen(0,'127.0.0.1');await once(server,'listening');
   t.after(()=>new Promise(resolve=>server.close(resolve)));
   const origin='http://127.0.0.1:'+server.address().port;
-  for(const route of ['/','/app.js','/styles.css','/presentation.js','/api/architecture']) {
+  for(const route of ['/','/app.js','/styles.css','/presentation.js','/segments.js','/api/architecture']) {
     const r=await fetch(origin+route);assert.equal(r.status,200,route);
     assert.equal(r.headers.get('x-content-type-options'),'nosniff');
   }
@@ -70,4 +71,14 @@ test('loopback demo serves allowlisted assets and rejects writes, foreign origin
   for(const route of ['/.env','/src/demo-data.mjs','/package.json','/api/dashboard?version=invalid']) {
     assert.ok([400,404].includes((await fetch(origin+route)).status),route);
   }
+});
+
+test('generated segment release belongs to the synthetic source and reconciles every eligible universe',()=>{
+  const dto=demoDTO();assert.equal(segmentCompatible(segmentArtifact,dto),true);
+  const months=Object.keys(dto.views.b2c.series.month);
+  for(const id of Object.keys(segmentArtifact.pairs)){
+    const expected=id.startsWith('ambassador')?dto.views.b2c.series.channel.Embaixador.positiveCount:id.startsWith('event')?dto.views.b2c.series.channel['Evento Presencial'].positiveCount:dto.views.b2c.positiveCount;
+    assert.equal(segmentMatrix(segmentArtifact,id,months).total,expected,id);
+  }
+  assert.equal(segmentArtifact.currencyDeclaration.authority,'synthetic-demo-contract');
 });

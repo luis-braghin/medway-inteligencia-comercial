@@ -2,7 +2,7 @@ import http from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { demoDTO } from './demo-data.mjs';
 
-const STATIC = new Map([['/','index.html'],['/index.html','index.html'],['/app.js','app.js'],['/styles.css','styles.css'],['/presentation.js','presentation.js']]);
+const STATIC = new Map([['/','index.html'],['/index.html','index.html'],['/app.js','app.js'],['/styles.css','styles.css'],['/presentation.js','presentation.js'],['/segments.js','segments.js'],['/segments.js','segments.js'],['/segments.js','segments.js']]);
 const HEADERS = {'X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','X-Frame-Options':'DENY','Cache-Control':'no-store','Content-Security-Policy':"default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' blob:; font-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'"};
 export function demoArchitecture() {
   return {nodes:[
