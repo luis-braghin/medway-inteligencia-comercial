@@ -531,6 +531,13 @@ async function authenticatePassword(fetchImpl, config, password) {
     if (/network|connect|fetch|DNS/iu.test(message)) throw error('AUTH_TRANSPORT_CONNECTION', 503);
     throw error('AUTH_UNAVAILABLE', 503);
   }
+  // `redirect: 'manual'` prevents the platform from following a redirect,
+  // but a custom fetch adapter or proxy can still return a final 2xx response
+  // marked as redirected. Treat that as a transport failure before trusting
+  // the payload or issuing a session cookie.
+  if (response?.redirected === true || response?.type === 'opaqueredirect') {
+    throw error('AUTH_TRANSPORT_REDIRECT', 503);
+  }
   if (!response || response.status >= 500 || response.status === 429 || (response.status >= 300 && response.status < 400)) throw error('AUTH_UNAVAILABLE',503);
   if (response.status < 200 || response.status >= 300) throw error('AUTH_FAILED', 401);
   let payload;
@@ -551,9 +558,12 @@ async function authenticatePassword(fetchImpl, config, password) {
 const portalClients = new WeakMap();
 function portalClient(fetchImpl, config) {
   const cached = portalClients.get(fetchImpl);
-  if (cached && cached.userId === config.gatewayUserId && cached.password === config.gatewayPassword) return cached.client;
+  if (cached && cached.origin === config.origin && cached.publicKey === config.publicKey
+    && cached.email === config.gatewayEmail && cached.userId === config.gatewayUserId
+    && cached.password === config.gatewayPassword) return cached.client;
   const client = createPortalClient({fetchImpl, config});
-  portalClients.set(fetchImpl,{userId:config.gatewayUserId,password:config.gatewayPassword,client});
+  portalClients.set(fetchImpl,{origin:config.origin,publicKey:config.publicKey,email:config.gatewayEmail,
+    userId:config.gatewayUserId,password:config.gatewayPassword,client});
   return client;
 }
 const hex = bytes => [...bytes].map(byte=>byte.toString(16).padStart(2,'0')).join('');

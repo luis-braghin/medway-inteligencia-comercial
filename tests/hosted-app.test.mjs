@@ -346,6 +346,47 @@ test('manual upstream redirects are rejected without a follow-up request', async
   assert.equal(rpcCalls(rpcRedirect, 'medway_portal_read').length, 0);
 });
 
+test('viewer Auth rejects a 2xx response marked as redirected', async () => {
+  const fake = fakeFetch({ sessionValid: false });
+  const fetchImpl = async (url, init = {}) => {
+    const parsed = new URL(url);
+    if (parsed.pathname === '/auth/v1/token') {
+      let body;
+      try { body = JSON.parse(init.body); } catch { body = null; }
+      if (body?.email === VIEWER_EMAIL) {
+        const response = responseJson({ access_token: VIEWER_TOKEN, expires_in: 60, user: { id: VIEWER_ID } });
+        Object.defineProperty(response, 'redirected', { value: true });
+        return response;
+      }
+    }
+    return fake.fetchImpl(url, init);
+  };
+  const response = await appWith(fake, { fetchImpl })(request('/auth/login', {
+    method: 'POST',
+    headers: sameOriginHeaders({ 'Content-Type': 'application/json' }),
+    body: JSON.stringify({ password: 'secret' }),
+  }), ENV);
+  assert.equal(response.status, 503);
+  assert.deepEqual(await response.json(), { code: 'AUTH_TRANSPORT_REDIRECT' });
+  assert.equal(response.headers.has('set-cookie'), false);
+  assert.equal(rpcCalls(fake, 'medway_portal_create_session').length, 0);
+});
+
+test('portal client cache is invalidated when the public key rotates', async () => {
+  const fake = fakeFetch();
+  const app = appWith(fake);
+  const first = await app(request('/api/dashboard', { headers: { Cookie: sessionCookie() } }), ENV);
+  assert.equal(first.status, 200);
+  const rotated = { ...ENV, MEDWAY_SUPABASE_PUBLIC_KEY: 'sb_publishable_rotated' };
+  const second = await app(request('/api/dashboard', { headers: { Cookie: sessionCookie() } }), rotated);
+  assert.equal(second.status, 200);
+  const authCalls = fake.calls.filter(({ path }) => path === '/auth/v1/token');
+  assert.equal(authCalls.length, 2);
+  const rpcCallsForRead = rpcCalls(fake, 'medway_portal_read');
+  assert.equal(rpcCallsForRead.length, 2);
+  assert.equal(rpcCallsForRead[1].init.headers.apikey, 'sb_publishable_rotated');
+});
+
 test('unauthenticated root is generic, health has no configuration, and public assets carry no data', async () => {
   const fake = fakeFetch();
   const app = appWith(fake);
