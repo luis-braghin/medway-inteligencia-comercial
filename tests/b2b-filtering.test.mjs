@@ -22,12 +22,17 @@ test('intersection filters match independent row sums and all group denominators
 test('empty intersections return zero instead of full-base or prior values',()=>{
   assert.equal(filterContractCube(cube,{status:'churn',plan:'Starter'}).count,0);
   assert.equal(filterContractCube(cube,{region:'unknown'}).sumMonthlyMinorUnits,0n);
+  assert.equal(filterContractCube(cube,{status:''}).count,0);
+  assert.equal(filterContractCube(cube,{status:0}).count,0);
 });
 test('artifact never includes identity and stale data cannot be attached to a publication',()=>{
   assert.ok(!JSON.stringify(cube).includes('PRIVATE'));assert.ok(!JSON.stringify(cube).includes('SECRET_ID'));
-  const dto={versionId:'v1',manifest:{sources:[{sourceId:'b2b-json',sha256:'s1'}]},views:{b2b:{count:4,byStatus:filterContractCube(cube).byStatus}}};
+  const expected=filterContractCube(cube);
+  const dto={versionId:'v1',manifest:{sources:[{sourceId:'b2b-json',sha256:'s1'}]},views:{b2b:{count:expected.count,byStatus:expected.byStatus,byPlan:expected.byPlan,byRegion:expected.byRegion}}};
   assert.equal(contractCubeCompatible(cube,dto),true);
   assert.equal(contractCubeCompatible(cube,{...dto,versionId:'v2'}),false);
   assert.equal(contractCubeCompatible({...cube,sourceSha256:'s2'},dto),false);
   assert.equal(contractCubeCompatible(cube,{...dto,views:{b2b:{count:3}}}),false);
+  assert.equal(contractCubeCompatible(cube,{...dto,views:{b2b:{...dto.views.b2b,byPlan:{...dto.views.b2b.byPlan,Enterprise:{count:4,licenses:999,sumMonthlyMinorUnits:'999'}}}}}),false);
+  assert.equal(contractCubeCompatible(cube,{...dto,views:{b2b:{...dto.views.b2b,byRegion:{}}}}),false);
 });

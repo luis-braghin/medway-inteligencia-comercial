@@ -14,15 +14,27 @@ export function contractCubeCompatible(artifact,publication) {
   if(source?.sha256!==artifact.sourceSha256)return false;
   const actual=filterContractCube(artifact),expected=publication.views?.b2b;
   if(!expected||actual.count!==expected.count)return false;
-  const entries=Object.entries(expected.byStatus??{});
-  return entries.length===Object.keys(actual.byStatus).length&&entries.every(([status,x])=>{
-    const y=actual.byStatus[status];return y&&y.count===x.count&&y.licenses===x.licenses&&BigInt(y.sumMonthlyMinorUnits)===BigInt(x.sumMonthlyMinorUnits);
+  // The dashboard renders all three B2B dimensions. Comparing status alone
+  // allows a stale plan/region cube to pass when its status totals happen to
+  // remain equal. Keep the comparison structural and exact for every map.
+  return ['byStatus','byPlan','byRegion'].every(key=>sameSummaryMap(actual[key],expected[key]));
+}
+function sameSummaryMap(actual,expected) {
+  if(!actual||!expected||typeof actual!=='object'||typeof expected!=='object'||Array.isArray(actual)||Array.isArray(expected))return false;
+  const actualEntries=Object.entries(actual),expectedEntries=Object.entries(expected);
+  return actualEntries.length===expectedEntries.length&&expectedEntries.every(([label,x])=>{
+    const y=actual[label];
+    if(!y||!x||y.count!==x.count||y.licenses!==x.licenses)return false;
+    try{return BigInt(y.sumMonthlyMinorUnits)===BigInt(x.sumMonthlyMinorUnits);}catch{return false;}
   });
 }
 export function filterContractCube(artifact,filters={}) {
   const result={count:0,licenses:0,sumMonthlyMinorUnits:0n,byStatus:{},byPlan:{},byRegion:{}};
   for(const c of artifact.cells){
-    if(['status','plan','region'].some(d=>filters[d]&&filters[d]!=='all'&&c[d]!==filters[d]))continue;
+    if(['status','plan','region'].some(d=>{
+      const value=filters[d];
+      return value!==undefined&&value!==null&&value!=='all'&&c[d]!==value;
+    }))continue;
     result.count+=c.count;result.licenses+=c.licenses;result.sumMonthlyMinorUnits+=BigInt(c.sumMonthlyMinorUnits);
     for(const [dimension,key] of [['status','byStatus'],['plan','byPlan'],['region','byRegion']]){
       const map=result[key],label=c[dimension];

@@ -44,3 +44,21 @@ test('an incomparable refreshed publication clears the previous growth definitio
   assert.equal(vm.runInNewContext(code+'\ncomparison()',context),'incomparable');
   assert.equal(Object.hasOwn(defs,'growth'),false);
 });
+test('embedded B2B filters reject mismatched plan or region totals and empty filters',()=>{
+  const begin=source.indexOf('// BEGIN CONTRACT FILTERS');
+  const end=source.search(/\n(?:let|const) contractArtifact=/);
+  assert.ok(begin>=0&&end>begin);
+  const embedded=vm.runInNewContext(source.slice(begin,end)+'\n({buildContractCube,filterContractCube,contractCubeCompatible})');
+  const cube=embedded.buildContractCube({versionId:'v1',sourceSha256:'s1',records:[
+    {status:'ativo',plan:'Pro',region:'Sul',licenses:10,monthly_minor_units:1000},
+    {status:'ativo',plan:'Basic',region:'Norte',licenses:20,monthly_minor_units:2000},
+  ]});
+  const publication={versionId:'v1',manifest:{sources:[{sourceId:'b2b-json',sha256:'s1'}]},views:{b2b:embedded.filterContractCube(cube)}};
+  assert.equal(embedded.contractCubeCompatible(cube,publication),true);
+  for(const dimension of ['plan','region']){
+    const changed={...cube,cells:cube.cells.map((cell,index)=>index?cell:{...cell,[dimension]:'Different'})};
+    assert.equal(embedded.contractCubeCompatible(changed,publication),false);
+  }
+  assert.equal(embedded.filterContractCube(cube,{status:''}).count,0);
+  assert.equal(embedded.filterContractCube(cube,{status:0}).count,0);
+});
