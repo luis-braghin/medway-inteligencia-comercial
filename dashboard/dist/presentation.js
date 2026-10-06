@@ -1,11 +1,11 @@
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function buildPresentation(dto) {
   return {versionId:dto.versionId,slides:[
-    {title:'Da informação à decisão.',lead:'Uma demonstração pública, reproduzível e inteiramente sintética.',text:'O dashboard permite explorar volume, valor e mix comercial sem divulgar dados privados do case.'},
-    {title:'Definições antes dos números.',lead:'Cada indicador explicita seu universo.',text:'O saldo observado inclui positivos, negativos e zero. Ticket positivo divide a soma positiva pela quantidade de linhas positivas. Uma linha não equivale necessariamente a um cliente único.'},
-    {title:'Consolidar com critério.',lead:'B2C e B2B têm bases temporais e monetárias distintas.',text:'B2C é um fluxo em BRL. B2B é um snapshot de status atual com moeda não informada. Um cenário mensal explicita suas hipóteses; o total financeiro oficial permanece indisponível.'},
-    {title:'Uma leitura rastreável.',lead:'Fontes → normalização → projeções → DTO → dashboard.',text:'Os parsers validam a entrada, os cálculos usam centavos inteiros e o DTO entrega somente agregados. Os testes públicos exercitam as fórmulas e os limites de segurança do portal.'},
-    {title:'Explore o código e a análise.',lead:'Esta apresentação explica a edição pública.',text:'A apresentação completa e os resultados reais ficam no portal protegido. Esta edição não representa uma implantação completa de ingestão nem comprova operação permanente.'}
+    {title:'Dashboard comercial com dados sintéticos',lead:'Uma demonstração pública, reproduzível e inteiramente sintética.',text:'O dashboard permite explorar volume, valor e mix comercial sem divulgar dados privados do case.'},
+    {title:'Como os indicadores são calculados',lead:'Cada indicador explicita seu universo.',text:'O saldo observado inclui positivos, negativos e zero. Ticket positivo divide a soma positiva pela quantidade de linhas positivas. Uma linha não equivale necessariamente a um cliente único.'},
+    {title:'B2C observado e cenário B2B',lead:'B2C e B2B têm bases temporais e monetárias distintas.',text:'B2C é um fluxo em BRL. B2B é um snapshot de status atual com moeda não informada. Um cenário mensal explicita suas hipóteses; o total financeiro oficial permanece indisponível.'},
+    {title:'Fluxo de dados e validação',lead:'Fontes → normalização → projeções → DTO → dashboard.',text:'Os parsers validam a entrada, os cálculos usam centavos inteiros e o DTO entrega somente agregados. Os testes públicos exercitam as fórmulas e os limites de segurança do portal.'},
+    {title:'Código público e resultados no portal',lead:'Esta apresentação explica a edição pública.',text:'A apresentação completa e os resultados reais ficam no portal protegido. Esta edição não representa uma implantação completa de ingestão nem comprova operação permanente.'}
   ]};
 }
 export function presentationMarkup(deck,index=0) {

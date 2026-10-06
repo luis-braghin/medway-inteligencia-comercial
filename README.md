@@ -1,6 +1,6 @@
 # Medway · Inteligência comercial
 
-Dashboard de vendas B2C, contratos B2B e composição mensal com premissas explícitas. Desenvolvido por Luiz para o case técnico de Sales Ops / RevOps, com assistência de IA na análise, implementação e revisão.
+Dashboard de vendas B2C, contratos B2B e composição mensal com premissas explícitas. Desenvolvido por Luis para o case técnico de Sales Ops / RevOps, com assistência de IA na análise, implementação e revisão.
 
 **[Abrir o portal do case](https://medway-inteligencia.luisz-braghin.workers.dev/)** · **[Abrir a apresentação completa](https://medway-inteligencia.luisz-braghin.workers.dev/#presentation)**
 
